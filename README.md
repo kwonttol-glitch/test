@@ -85,15 +85,30 @@ Edit `dashboard.src.html`, never `dashboard.html` — the latter is generated, a
 The page can refresh itself from the browser, because all three JSON APIs send
 `access-control-allow-origin: *`. It re-fetches the catalogue and providers (about a
 second), re-renders, then walks the per-model endpoints five at a time with a progress
-meter and a Stop button. The result is offered back as a `payload.json` download you can
-drop into `data/` to make it permanent.
+meter and a Stop button. Requests retry with exponential backoff and honor `Retry-After`
+on 429, and Stop aborts cleanly, keeping whatever already arrived.
+
+The refreshed data is then offered back as a `payload.json` you can drop into `data/` to
+make it permanent. That save takes one of two routes, because a plain `<a download>` is
+inert for artifact viewers — the sandbox never grants pages download permission:
+
+- **local copy** — the blob `href` on the link does the work, as normal.
+- **published page** — the save goes through the `downloads` runtime capability
+  (`claude.use("downloads")` then `save({filename, data})`), which shows the viewer a
+  confirmation they can decline. Declined and rate-limited saves are reported in the
+  status line rather than failing silently.
+
+If neither route is available the link stays hidden, so there is no dead affordance.
+This is why the artifact is published with `capabilities: {downloads: true}`; a republish
+that passes `capabilities: {}` would revoke it and break the published save path, while
+omitting the field carries the declaration forward.
 
 **Where it works:** a local copy — `open dashboard.html`, or any `localhost` server.
 
 **Where it does not:** the published artifact. That page runs under a CSP that blocks
 fetch to every host except a few script CDNs, so the button reports the block and points
-at the CLI instead. No artifact capability grants outbound HTTP; the ones on offer cover
-storage, comments, connectors and sampling. If you need the published page to show fresh
+at the CLI instead. No artifact capability grants outbound HTTP; the ten on offer cover
+storage, comments, connectors, sampling and downloads. If you need the published page to show fresh
 numbers, re-run the scraper and republish — that path is three commands, above.
 
 **What the button cannot refresh at all:** the leaderboard. `/rankings` is an HTML page
