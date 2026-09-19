@@ -1,0 +1,15 @@
+# macOS / iCloud
+.DS_Store
+.icloud
+*.icloud
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build intermediate: regenerate with `python3 build_payload.py` from data/*.csv.
+# The scraped snapshot and the built dashboard.html are both tracked; this one
+# file is pure middle-of-the-pipeline and would triple the data in the diff.
+data/payload.json
