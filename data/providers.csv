@@ -1,0 +1,110 @@
+name,slug,headquarters,datacenters,privacy_policy_url,terms_of_service_url,status_page_url
+AI21,ai21,IL,,https://www.ai21.com/privacy-policy/,https://www.ai21.com/terms-of-service/,https://status.ai21.com/
+AionLabs,aion-labs,IL,,https://www.aionlabs.ai/privacy-policy/,https://www.aionlabs.ai/terms/,
+AkashML,akashml,,,https://akashml.com/privacy,https://akashml.com/terms,
+Alibaba,alibaba,SG,SG|CN,https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-privacy-policy,https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-product-terms-of-service-v-3-8-0,https://status.alibabacloud.com/
+Amazon Bedrock,amazon-bedrock,US,,https://aws.amazon.com/privacy,https://aws.amazon.com/service-terms/,https://health.aws.amazon.com/health/status
+Amazon Nova,amazon-nova,US,US,,,
+Ambient,ambient,,,,,
+Anthropic,anthropic,US,,https://www.anthropic.com/legal/privacy,https://www.anthropic.com/legal/commercial-terms,https://status.anthropic.com/
+Arcee AI,arcee-ai,US,US,,,
+AssemblyAI,assemblyai,,US,https://www.assemblyai.com/legal/privacy-policy,https://www.assemblyai.com/legal/terms-of-service,https://status.assemblyai.com
+AtlasCloud,atlas-cloud,US,,https://www.atlascloud.ai/privacy,,
+Avian,avian,US,,https://avian.io/privacy,https://avian.io/terms,
+Azure,azure,US,,https://www.microsoft.com/en-us/privacy/privacystatement,https://www.microsoft.com/en-us/legal/terms-of-use?oneroute=true,https://status.azure.com/
+Baidu,baidu,CN,,https://intl.cloud.baidu.com/en/doc/Agreements/s/Plr0fi68q-intl-en,https://intl.cloud.baidu.com/en/doc/Agreements/s/bmesahnjh-intl-en,
+BaseTen,baseten,US,,https://www.baseten.co/privacy-policy,https://www.baseten.co/terms-and-conditions,https://status.baseten.co/
+Black Forest Labs,black-forest-labs,,,https://bfl.ai/legal/privacy-policy,https://bfl.ai/legal/terms-of-service,
+Cerebras,cerebras,US,,https://www.cerebras.ai/privacy-policy,https://www.cerebras.ai/terms-of-service,https://status.cerebras.ai/
+Chutes,chutes,US,,https://chutes.ai/privacy,https://chutes.ai/tos,
+Cirrascale,cirrascale,,,https://www.cirrascale.com/privacy-policy,https://www.cirrascale.com/terms-of-service,
+Clarifai,clarifai,US,US,https://www.clarifai.com/company/privacy-policy,https://www.clarifai.com/company/terms,
+Claude Platform on AWS,claude-on-aws,US,,https://www.anthropic.com/legal/privacy,https://www.anthropic.com/legal/commercial-terms,https://status.anthropic.com/
+Cloudflare,cloudflare,US,,https://developers.cloudflare.com/workers-ai/privacy,https://www.cloudflare.com/service-specific-terms-developer-platform/#developer-platform-terms,https://www.cloudflarestatus.com/
+Cohere,cohere,US,,https://cohere.com/privacy,https://cohere.com/terms-of-use,https://status.cohere.ai/
+CoreWeave,coreweave,US,US,https://docs.coreweave.com/policies/terms-of-service/privacy-policy,https://docs.coreweave.com/policies/terms-of-service,
+Cosine,cosine,,,,,
+Crucible,crucible,,,,,
+Crusoe,crusoe,US,,https://legal.crusoe.ai/open-router#cloud-privacy-policy,https://legal.crusoe.ai/open-router#managed-inference-tos-open-router,https://status.crusoecloud.com/
+Darkbloom,darkbloom,,,https://www.darkbloom.dev/privacy.html,https://www.darkbloom.dev/terms.html,
+Databricks,databricks,US,,https://www.databricks.com/legal/privacynotice,https://www.databricks.com/terms-of-use,https://status.databricks.com
+Decart,decart,US,US,https://cogito.decart.ai/legal/privacy,https://cogito.decart.ai/legal/terms,
+Deepgram,deepgram,,,https://deepgram.com/privacy,https://deepgram.com/terms,
+DeepInfra,deepinfra,US,,https://deepinfra.com/privacy,https://deepinfra.com/terms,https://status.deepinfra.com/
+DeepSeek,deepseek,CN,,https://chat.deepseek.com/downloads/DeepSeek%20Privacy%20Policy.html,https://chat.deepseek.com/downloads/DeepSeek%20Terms%20of%20Use.html,https://status.deepseek.com/
+DekaLLM,dekallm,ID,ID,https://www.cloudeka.id/id/privacy-policy/,https://docs.cloudeka.ai/service-portal-ai/end-user-license-agreement,
+DigitalOcean,digitalocean,,,https://www.digitalocean.com/legal/privacy-policy,https://www.digitalocean.com/legal/terms-of-service-agreement,
+FakeProvider,fake-provider,US,,,,
+Featherless,featherless,US,,https://featherless.ai/privacy,https://featherless.ai/terms,https://featherless.ai/status
+Fireworks,fireworks,US,,https://fireworks.ai/privacy-policy,https://fireworks.ai/terms-of-service,https://status.fireworks.ai/
+Fish Audio,fish-audio,,,https://fish.audio/privacy,https://fish.audio/terms,
+Friendli,friendli,US,,https://friendli.ai/privacypolicy,https://friendli.ai/terms-of-service,https://status.friendli.ai/
+GMICloud,gmicloud,US,US,https://docs.gmicloud.ai/privacy,https://www.gmicloud.ai/terms-and-conditions,
+Google,google-vertex,US,,https://cloud.google.com/terms/cloud-privacy-notice,https://cloud.google.com/terms/,https://status.cloud.google.com/products/sdXM79fz1FS6ekNpu37K/history
+Google AI Studio,google-ai-studio,US,,https://cloud.google.com/terms/cloud-privacy-notice,https://cloud.google.com/terms/,
+Groq,groq,US,,https://groq.com/privacy-policy/,https://groq.com/terms-of-use/,https://status.groq.com/
+HeyGen,heygen,US,,https://www.heygen.com/privacy,https://www.heygen.com/terms,
+Inception,inception,,,https://www.inceptionlabs.ai/terms#privacy-policy,https://www.inceptionlabs.ai/terms,
+Inceptron,inceptron,SE,FI,https://www.inceptron.io/privacy,https://www.inceptron.io/termsofservice,
+Inferact vLLM,inferact-vllm,,,,,
+InferenceNet,inference-net,US,,https://inference.net/privacy-policy,https://inference.net/terms-of-service,https://status.inference.net
+Infermatic,infermatic,,,https://infermatic.ai/privacy-policy/,https://infermatic.ai/terms-and-conditions/,
+Inflection,inflection,,,https://inflection.ai/privacy-policy,https://developers.inflection.ai/tos,
+Io Net,io-net,US,,https://io.net/privacy,https://io.net/terms,https://status.io.net/
+Ionstream,ionstream,US,US,https://ionstream.ai/privacy-policy/,https://ionstream.ai/terms-and-conditions/,
+Krea,krea,US,,https://www.krea.ai/privacy-policy,https://www.krea.ai/terms,
+Liquid,liquid,,,https://www.liquid.ai/privacy-policy,https://www.liquid.ai/terms-conditions,
+Makora,makora,,,,,https://makora.statuspage.io
+Mancer 2,mancer,,,https://mancer.tech/privacy,https://mancer.tech/terms,
+Mara,mara,US,US,https://www.mara.com/mara-legals/ai-policies#cloud-pp,https://www.mara.com/mara-legals/ai-policies#cloud-toc,
+Meta,meta,US,,https://www.facebook.com/privacy/policy/,https://ai.developer.meta.com/legal/terms-of-service,
+Minimax,minimax,SG,US,https://www.minimax.io/platform/protocol/privacy-policy,https://www.minimax.io/platform/protocol/terms-of-service,
+Mistral,mistral,FR,,https://mistral.ai/terms/#privacy-policy,https://mistral.ai/terms/#terms-of-use,https://status.mistral.ai/
+Modal,modal,US,,https://modal.com/legal/privacy-policy,https://modal.com/legal/terms,https://status.modal.com/
+ModelRun,modelrun,US,US,https://www.modular.com/legal/privacy,https://www.modular.com/legal/terms,
+Modular,modular,US,US,https://www.runmodelrun.com/privacy-policy.html,https://www.runmodelrun.com/TOS.html,
+Moonshot AI,moonshotai,SG,SG,https://platform.moonshot.ai/docs/agreement/userprivacy,https://platform.moonshot.ai/docs/agreement/modeluse,
+Morph,morph,US,US,https://morphllm.com/privacy,https://www.morphllm.com/privacy/tos,
+Near AI,near-ai,,,https://near.ai/privacy-policy,https://near.ai/terms-of-service,
+Nebius,nebius,NL,,https://docs.nebius.com/legal/studio/privacy/,https://docs.nebius.com/legal/studio/terms-of-use/,
+Nex AGI,nex-agi,CN,SG,https://api.nex-agi.cn/privacy-policy,,
+NextBit,nextbit,ES,ES,https://www.nextbit256.com/docs/privacy-policy,https://www.nextbit256.com/docs/terms-of-service,
+Novita,novita,US,,https://novita.ai/legal/privacy-policy,https://novita.ai/legal/terms-of-service,https://status.novita.ai/
+Nvidia,nvidia,US,US,https://www.nvidia.com/en-us/about-nvidia/privacy-policy/,https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf,
+Ollama,ollama,,,,,
+OpenAI,openai,US,,https://openai.com/policies/privacy-policy/,https://openai.com/policies/row-terms-of-use/,https://status.openai.com/
+OpenInference,open-inference,US,,https://www.openinference.ai/privacy,https://www.openinference.ai/terms,
+Parasail,parasail,US,,https://www.parasail.io/legal/privacy-policy,https://parasail.io/legal/terms-of-service,
+Perceptron,perceptron,US,,https://www.perceptron.inc/privacy-policy,https://www.perceptron.inc/terms-of-use,
+Perplexity,perplexity,US,,https://www.perplexity.ai/hub/legal/privacy-policy,https://www.perplexity.ai/hub/legal/perplexity-api-terms-of-service,https://status.perplexity.ai/
+Phala,phala,US,,https://redpill.ai/privacy,https://redpill.ai/terms,https://status.phala.network/
+Poolside,poolside,,,https://poolside.ai/legal/privacy,http://poolside.ai/legal,
+PrimeIntellect,primeintellect,,,,,
+Quiver,quiver,,,,,
+Recraft,recraft,,,,,
+Reka,reka,,,https://reka.ai/legal/privacy-policy,https://reka.ai/legal/terms-of-use,
+Relace,relace,,,https://www.relace.ai/privacy-policy,https://www.relace.ai/terms-of-use,https://status.relace.ai
+Runway,runway,US,,https://runwayml.com/privacy-policy,https://runwayml.com/terms-of-use,https://status.runwayml.com
+Sail Research,sail-research,US,,https://www.sailresearch.com/privacy,https://www.sailresearch.com/terms,https://status.sailresearch.com/
+Sakana AI,sakana,,,https://console.sakana.ai/privacy-policy,https://console.sakana.ai/terms-of-service,
+SambaNova,sambanova,US,,https://sambanova.ai/privacy-policy,https://sambanova.ai/terms-and-conditions,https://status.sambanova.ai/
+Seed,seed,SG,,https://docs.byteplus.com/en/docs/legal/docs-privacy-policy,https://docs.byteplus.com/en/docs/legal/docs-terms-of-service,
+SiliconFlow,siliconflow,SG,US,https://docs.siliconflow.com/en/legals/privacy-policy,https://docs.siliconflow.com/en/legals/terms-of-service,
+Sourceful,sourceful,,,https://www.sourceful.com/legal/privacy-policy,https://www.sourceful.com/legal/spring-terms-of-use,
+Stealth,stealth,,,,https://openrouter.ai/terms/stealth,
+StepFun,stepfun,,,,https://platform.stepfun.ai/docs/en/agreement/userservice,
+StreamLake,streamlake,CN,,https://www.streamlake.ai/document/DOC/mgkci47q13qr66h9i54,https://www.streamlake.ai/document/DOC/mgkchnd89grpt1961fw,https://status.streamlake.ai/
+Switchpoint,switchpoint,US,US,,,
+Tencent,tencent,CN,SG,https://www.tencentcloud.com/en/document/product/1300/78952,https://www.tencentcloud.com/en/document/product/301/78869,https://status.tencentcloud.com
+Tenstorrent,tenstorrent,US,US,https://tenstorrent.com/privacy,https://tenstorrent.com/terms,
+Thinking Machines,thinkingmachines,,,https://thinkingmachines.ai/legal/tml-free-research-api-tier-privacy-notice.pdf,https://thinkingmachines.ai/legal/tml-free-research-api-tier-terms-of-service.pdf,
+Together,together,US,,https://www.together.ai/privacy,https://www.together.ai/terms-of-service,https://status.together.ai/
+TypeSafe,typesafe,,,https://typesafe.ai/legal/privacy-policy,https://typesafe.ai/legal/terms,
+Unbiased,unbiased,,,https://unbiased.ai/terms/#privacy-policy,https://unbiased.ai/terms/,
+Upstage,upstage,,,https://www.upstage.ai/privacy-policy,https://www.upstage.ai/terms-of-service,
+Venice,venice,US,US,https://venice.ai/legal/privacy-policy,https://venice.ai/legal/tos,
+VoyageAI by MongoDB,voyageai,,,https://www.voyageai.com/privacy,https://www.voyageai.com/tos,
+Wafer,wafer,US,,https://www.wafer.ai/privacy-policy,https://www.wafer.ai/terms,
+xAI,xai,US,,https://x.ai/legal/privacy-policy,https://x.ai/legal/terms-of-service-enterprise,https://status.x.ai/
+Xiaomi,xiaomi,CN,SG|NL,https://platform.xiaomimimo.com/#/docs/terms/privacy-policy,https://platform.xiaomimimo.com/#/docs/terms/user-agreement,
+Z.AI,z-ai,SG,SG,https://chat.z.ai/legal-agreement/privacy-policy,https://chat.z.ai/legal-agreement/terms-of-service,

@@ -1,0 +1,1901 @@
+<title>OpenRouter Model Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --plane: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --ring: rgba(11, 11, 11, 0.10);
+    --ring-strong: rgba(11, 11, 11, 0.22);
+    --wash: rgba(11, 11, 11, 0.035);
+    --s1: #2a78d6;
+    --s2: #eb6834;
+    --s3: #1baf7a;
+    --neg: #e34948;
+    --dim: #b9b7b0;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --plane: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --ring: rgba(255, 255, 255, 0.10);
+      --ring-strong: rgba(255, 255, 255, 0.26);
+      --wash: rgba(255, 255, 255, 0.05);
+      --s1: #3987e5;
+      --s2: #d95926;
+      --s3: #199e70;
+      --neg: #e66767;
+      --dim: #4a4a46;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --plane: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --ring: rgba(255, 255, 255, 0.10);
+    --ring-strong: rgba(255, 255, 255, 0.26);
+    --wash: rgba(255, 255, 255, 0.05);
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --neg: #e66767;
+    --dim: #4a4a46;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding-inline: 20px;
+    padding-block: 28px 56px;
+    background: var(--plane);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* ---------- header ---------- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 4.4vw, 38px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 0;
+    max-width: 64ch;
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+  .stamp {
+    margin: 14px 0 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  /* ---------- kpi row ---------- */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    margin: 30px 0 0;
+    background: var(--ring);
+    border: 1px solid var(--ring);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .kpi { background: var(--surface); padding: 14px 16px 15px; }
+  .kpi-label {
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin: 0 0 4px;
+  }
+  .kpi-value {
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+  }
+  .kpi-value .unit { font-size: 13px; font-weight: 400; color: var(--ink-2); }
+  .kpi-sub { font-size: 11.5px; color: var(--muted); font-family: var(--mono); margin-top: 3px; }
+
+  /* ---------- live scrape strip ---------- */
+  .source {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px 12px;
+    margin: 18px 0 0;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--ring);
+    border-radius: 3px;
+  }
+  .primary {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--surface);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 7px 13px;
+    min-height: 34px;
+    cursor: pointer;
+  }
+  .primary:hover:not(:disabled) { opacity: 0.88; }
+  .primary:disabled { opacity: 0.45; cursor: default; }
+  .source-status {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+  .source-status.is-bad { color: var(--neg); }
+  .source-status.is-good { color: var(--s3); }
+  .meter {
+    flex: 0 0 120px;
+    height: 4px;
+    border-radius: 2px;
+    background: #cde2fb;
+    overflow: hidden;
+  }
+  :root[data-theme="dark"] .meter { background: #184f95; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .meter { background: #184f95; }
+  }
+  .meter > span { display: block; height: 100%; width: 0; background: var(--s1); }
+  .dl { font-size: 12.5px; color: var(--s1); }
+
+  /* ---------- filters ---------- */
+  .filters {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 30;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px 14px;
+    margin: 26px 0 0;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--ring);
+    border-radius: 3px;
+  }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field > label {
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  input[type="search"], select {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--plane);
+    border: 1px solid var(--ring-strong);
+    border-radius: 2px;
+    padding: 6px 8px;
+    min-height: 32px;
+  }
+  input[type="search"] { min-width: 190px; }
+  select { min-width: 132px; }
+  input[type="range"] { width: 148px; accent-color: var(--s1); min-height: 32px; }
+  .toggles { display: flex; flex-wrap: wrap; gap: 6px; }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    background: var(--plane);
+    border: 1px solid var(--ring-strong);
+    border-radius: 2px;
+    padding: 6px 9px;
+    cursor: pointer;
+    min-height: 32px;
+    user-select: none;
+  }
+  .toggle input { accent-color: var(--s1); margin: 0; }
+  .toggle:hover { background: var(--wash); }
+  .range-value { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+  .reset {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--ink-2);
+    background: none;
+    border: 1px solid var(--ring-strong);
+    border-radius: 2px;
+    padding: 6px 11px;
+    min-height: 32px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  .reset:hover { background: var(--wash); color: var(--ink); }
+  .matchline {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--ring);
+    padding-top: 9px;
+    margin: 0;
+  }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--ring);
+    border-radius: 3px;
+    padding: 18px 18px 16px;
+    margin-top: 18px;
+  }
+  .card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 4px;
+  }
+  .card h2 {
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -0.008em;
+    margin: 0;
+  }
+  .card .note {
+    margin: 4px 0 14px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    max-width: 76ch;
+  }
+  .card .note code, .mono { font-family: var(--mono); font-size: 0.94em; }
+
+  .segmented { display: inline-flex; border: 1px solid var(--ring-strong); border-radius: 2px; overflow: hidden; }
+  .segmented button {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-2);
+    background: var(--surface);
+    border: 0;
+    border-right: 1px solid var(--ring-strong);
+    padding: 6px 11px;
+    min-height: 30px;
+    cursor: pointer;
+  }
+  .segmented button:last-child { border-right: 0; }
+  .segmented button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+  .segmented button:hover:not([aria-pressed="true"]) { background: var(--wash); }
+
+  .two-up { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .two-up > .card { margin-top: 0; }
+  @media (max-width: 860px) { .two-up { grid-template-columns: 1fr; } }
+
+  /* ---------- charts ---------- */
+  .plot { width: 100%; position: relative; }
+  .plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .axisline { stroke: var(--axis); stroke-width: 1; }
+  .tick {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    fill: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .axis-title {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    fill: var(--ink-2);
+    letter-spacing: 0.01em;
+  }
+  .bar-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    fill: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .row-label { font-family: var(--sans); font-size: 11.5px; fill: var(--ink-2); }
+  .dot { stroke: var(--surface); stroke-width: 2; }
+  .dot.is-sel { stroke-width: 2.5; }
+  .hit { fill: transparent; cursor: pointer; }
+  .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .barhit { cursor: default; }
+  .barhit:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .callout { font-family: var(--sans); font-size: 11.5px; fill: var(--ink); font-weight: 500; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+  }
+  .legend li { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink-2); }
+  .legend .swatch { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+  .legend .count { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+  /* ---------- tooltip ---------- */
+  .tip {
+    position: fixed;
+    z-index: 60;
+    min-width: 172px;
+    max-width: 274px;
+    background: var(--surface);
+    border: 1px solid var(--ring-strong);
+    border-radius: 3px;
+    padding: 9px 11px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 90ms ease;
+  }
+  .tip[data-show="1"] { opacity: 1; }
+  .tip-name {
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    line-height: 1.3;
+  }
+  .tip-key { width: 13px; height: 2px; border-radius: 1px; flex: none; }
+  .tip-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    font-size: 12px;
+  }
+  .tip-row + .tip-row { margin-top: 3px; }
+  .tip-row .v {
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .tip-row .k { color: var(--muted); }
+  .tip-hint { margin-top: 7px; font-size: 11px; color: var(--muted); }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow: auto; max-height: 560px; border: 1px solid var(--ring); border-radius: 2px; }
+  .datatable { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  .datatable th, .datatable td {
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--grid);
+    white-space: nowrap;
+  }
+  .datatable thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--surface);
+    border-bottom: 1px solid var(--axis);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .datatable th.sortable { cursor: pointer; user-select: none; }
+  .datatable th.sortable:hover { color: var(--ink); }
+  .datatable th .arrow { color: var(--s1); }
+  .datatable td.num {
+    text-align: right;
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .datatable td.id { font-family: var(--mono); font-size: 11.5px; }
+  .datatable tbody tr:hover { background: var(--wash); }
+  .datatable tbody tr.is-sel { background: var(--wash); box-shadow: inset 3px 0 0 var(--s2); }
+  .datatable tbody tr { cursor: pointer; }
+  .flag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    border: 1px solid var(--ring-strong);
+    color: var(--ink-2);
+  }
+  .empty { padding: 26px 4px; color: var(--muted); font-size: 13px; }
+
+  footer {
+    margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px solid var(--ring);
+    color: var(--ink-2);
+    font-size: 12.5px;
+  }
+  footer h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+  footer ul { margin: 0; padding-left: 18px; }
+  footer li { margin-bottom: 5px; max-width: 86ch; }
+
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  @media (max-width: 560px) {
+    body { padding-inline: 16px; }
+    .filters { position: static; }
+    input[type="search"] { min-width: 100%; }
+    .field, .field > input, .field > select { width: 100%; }
+    .reset { margin-left: 0; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Scraped catalogue · openrouter.ai</p>
+    <h1>OpenRouter Model Atlas</h1>
+    <p class="lede">
+      Every model on the router, priced per million tokens and plotted against its context
+      window. Filter the field, then click any point to see which providers serve that model
+      and what each one charges.
+    </p>
+    <p class="stamp" id="stamp"></p>
+
+    <div class="source">
+      <button type="button" class="primary" id="rescrape">Re-scrape live</button>
+      <button type="button" class="reset" id="rescrape-stop" style="margin-left:0" hidden>Stop</button>
+      <label class="toggle"><input type="checkbox" id="rescrape-eps" checked> Per-provider pricing</label>
+      <div class="meter" id="rescrape-meter" hidden><span id="rescrape-bar"></span></div>
+      <p class="source-status" id="rescrape-status" role="status" aria-live="polite"></p>
+      <a class="dl" id="rescrape-dl" hidden download="payload.json">Download refreshed payload.json</a>
+    </div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Catalogue summary"></section>
+
+  <section class="filters" aria-label="Filters">
+    <div class="field">
+      <label for="f-q">Search</label>
+      <input type="search" id="f-q" placeholder="model or author" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="f-author">Author</label>
+      <select id="f-author"></select>
+    </div>
+    <div class="field">
+      <label for="f-input">Inputs</label>
+      <select id="f-input">
+        <option value="">Any</option>
+        <option value="text">Text only</option>
+        <option value="vision">Vision</option>
+        <option value="av">Audio / video</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-ctx">Min context</label>
+      <select id="f-ctx">
+        <option value="0">Any</option>
+        <option value="32768">32K+</option>
+        <option value="131072">128K+</option>
+        <option value="262144">256K+</option>
+        <option value="1000000">1M+</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-price">Max input price</label>
+      <input type="range" id="f-price" min="0" max="100" value="100" step="1">
+      <span class="range-value" id="f-price-out">no limit</span>
+    </div>
+    <div class="toggles">
+      <label class="toggle"><input type="checkbox" id="f-tools"> Tool calling</label>
+      <label class="toggle"><input type="checkbox" id="f-reason"> Reasoning</label>
+      <label class="toggle"><input type="checkbox" id="f-free"> Free only</label>
+    </div>
+    <button type="button" class="reset" id="f-reset">Reset</button>
+    <p class="matchline" id="matchline" role="status"></p>
+  </section>
+
+  <main>
+    <section class="card">
+      <div class="card-head">
+        <h2>Price against context window</h2>
+        <div class="segmented" role="group" aria-label="Price axis">
+          <button type="button" id="ax-in" aria-pressed="true">Input price</button>
+          <button type="button" id="ax-out" aria-pressed="false">Output price</button>
+        </div>
+      </div>
+      <p class="note">
+        Both scales are logarithmic — the field spans four orders of magnitude in price and
+        nearly three in context. Free models sit in their own gutter at the left, since
+        <span class="mono">$0</span> has no place on a log scale. Click a point to pin a model;
+        the provider chart and the table follow it.
+      </p>
+      <ul class="legend" id="scatter-legend"></ul>
+      <div class="plot" id="scatter"></div>
+    </section>
+
+    <div class="two-up">
+      <section class="card">
+        <div class="card-head">
+          <h2 id="prov-title">Provider spread</h2>
+          <div class="segmented" role="group" aria-label="Provider view">
+            <button type="button" id="prov-chart" aria-pressed="true">Chart</button>
+            <button type="button" id="prov-table" aria-pressed="false">Table</button>
+          </div>
+        </div>
+        <p class="note" id="prov-note"></p>
+        <div class="plot" id="prov-plot"></div>
+        <div id="prov-tablewrap" hidden></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Yesterday's busiest models</h2>
+          <div class="segmented" role="group" aria-label="Ranking metric">
+            <button type="button" id="rk-vol" aria-pressed="true">Volume</button>
+            <button type="button" id="rk-chg" aria-pressed="false">Change</button>
+            <button type="button" id="rk-tbl" aria-pressed="false">Table</button>
+          </div>
+        </div>
+        <p class="note" id="rk-note"></p>
+        <div class="plot" id="rk-plot"></div>
+        <div id="rk-tablewrap" hidden></div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Every filtered model</h2>
+        <span class="mono" style="font-size:11.5px;color:var(--muted)" id="table-count"></span>
+      </div>
+      <p class="note">
+        The plain-text twin of the chart above: every value plotted is readable here, sortable
+        by any column. <span class="mono">min $/Mtok</span> is the cheapest provider serving
+        that model, which is often below the list price.
+      </p>
+      <div class="tablewrap">
+        <table class="datatable" id="model-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty" id="table-empty" hidden>No model matches these filters.</p>
+    </section>
+  </main>
+
+  <footer>
+    <h3>Reading the data</h3>
+    <ul id="footnotes"></ul>
+  </footer>
+</div>
+
+<div class="tip" id="tip" role="tooltip" aria-hidden="true"></div>
+
+<script type="application/json" id="payload">__PAYLOAD__</script>
+<script>
+(function () {
+  "use strict";
+
+  var DATA = JSON.parse(document.getElementById("payload").textContent);
+  var MODELS = DATA.models, ENDPOINTS = DATA.endpoints, RANKS = DATA.rankings;
+  // MODELS and ENDPOINTS are replaced wholesale by a live re-scrape
+  var SVG_NS = "http://www.w3.org/2000/svg";
+
+  // ---------- input classes: 16 modality strings fold into 3 color slots ----------
+  function inputClass(m) {
+    var mod = m.mod || "";
+    var inputs = mod.split("->")[0];
+    if (inputs.indexOf("audio") > -1 || inputs.indexOf("video") > -1) return "av";
+    if (inputs.indexOf("image") > -1) return "vision";
+    return "text";
+  }
+  var CLASSES = [
+    { key: "text", label: "Text only", color: "var(--s1)" },
+    { key: "vision", label: "Vision", color: "var(--s2)" },
+    { key: "av", label: "Audio / video", color: "var(--s3)" }
+  ];
+  var CLASS_BY_KEY = {};
+  CLASSES.forEach(function (c) { CLASS_BY_KEY[c.key] = c; });
+
+  // derived fields, recomputed whenever models or endpoints are replaced
+  function decorate() {
+    MODELS.forEach(function (m) {
+      m.cls = inputClass(m);
+      var eps = ENDPOINTS[m.id] || [];
+      m.nprov = eps.length;
+      var priced = eps.filter(function (e) { return typeof e.pin === "number"; });
+      m.minprov = priced.length ? priced[0].pin : null;
+    });
+  }
+  decorate();
+
+  // ---------- formatting ----------
+  function fmtPrice(v) {
+    if (v === null || v === undefined) return "—";
+    if (v === 0) return "$0";
+    if (v < 0.1) return "$" + v.toFixed(3);
+    if (v < 10) return "$" + v.toFixed(2);
+    return "$" + v.toFixed(0);
+  }
+  function fmtTokens(n) {
+    if (n === null || n === undefined) return "—";
+    if (n >= 1e12) return (n / 1e12).toFixed(n >= 1e13 ? 1 : 2) + "T";
+    if (n >= 1e9) return (n / 1e9).toFixed(1) + "B";
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
+    if (n >= 1e3) return Math.round(n / 1e3) + "K";
+    return String(n);
+  }
+  function fmtCtx(n) {
+    if (!n) return "—";
+    if (n >= 1e6) return (n / 1e6).toFixed(n % 1e6 === 0 ? 0 : 1) + "M";
+    return Math.round(n / 1024) + "K";
+  }
+  function fmtPct(f) {
+    if (f === null || f === undefined) return "—";
+    var p = f * 100;
+    return (p > 0 ? "+" : "") + (Math.abs(p) >= 100 ? p.toFixed(0) : p.toFixed(1)) + "%";
+  }
+  function fmtInt(n) { return n.toLocaleString("en-US"); }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, text) {
+    var node = document.createElementNS(SVG_NS, name);
+    if (attrs) {
+      for (var k in attrs) {
+        if (attrs[k] !== null && attrs[k] !== undefined) node.setAttribute(k, attrs[k]);
+      }
+    }
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function svgRoot(w, h) {
+    var s = el("svg", {
+      width: w, height: h, viewBox: "0 0 " + w + " " + h,
+      role: "img", "font-family": "inherit"
+    });
+    return s;
+  }
+
+  // ---------- state ----------
+  var state = {
+    q: "", author: "", input: "", minCtx: 0, maxPrice: null,
+    tools: false, reason: false, free: false,
+    axis: "pin", selected: null,
+    provView: "chart", rkView: "vol",
+    sort: "pin", dir: 1
+  };
+
+  var PRICE_STOPS = [0.05, 0.1, 0.25, 0.5, 1, 2, 3, 5, 10, 15, 25, 50, 100, null];
+
+  function priceLimit() { return state.maxPrice; }
+
+  function filtered() {
+    var q = state.q.trim().toLowerCase();
+    var lim = priceLimit();
+    return MODELS.filter(function (m) {
+      if (q && (m.id + " " + m.name).toLowerCase().indexOf(q) === -1) return false;
+      if (state.author && m.author !== state.author) return false;
+      if (state.input && m.cls !== state.input) return false;
+      if (state.minCtx && (!m.ctx || m.ctx < state.minCtx)) return false;
+      if (state.tools && !m.tools) return false;
+      if (state.reason && !m.reason) return false;
+      if (state.free && !m.free) return false;
+      if (lim !== null && !(typeof m.pin === "number" && m.pin <= lim)) return false;
+      return true;
+    });
+  }
+
+  // ---------- tooltip ----------
+  var tip = document.getElementById("tip");
+  function tipShow(html) {
+    tip.textContent = "";
+    html.forEach(function (n) { tip.appendChild(n); });
+    tip.setAttribute("data-show", "1");
+    tip.setAttribute("aria-hidden", "false");
+  }
+  function tipHide() {
+    tip.removeAttribute("data-show");
+    tip.setAttribute("aria-hidden", "true");
+  }
+  function tipMove(ev) {
+    var pad = 14, r = tip.getBoundingClientRect();
+    var x = ev.clientX + pad, y = ev.clientY + pad;
+    if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - pad;
+    if (y + r.height > window.innerHeight - 8) y = ev.clientY - r.height - pad;
+    tip.style.left = Math.max(8, x) + "px";
+    tip.style.top = Math.max(8, y) + "px";
+  }
+  function tipName(text, color) {
+    var d = document.createElement("div");
+    d.className = "tip-name";
+    if (color) {
+      var key = document.createElement("span");
+      key.className = "tip-key";
+      key.style.background = color;
+      d.appendChild(key);
+    }
+    d.appendChild(document.createTextNode(text));
+    return d;
+  }
+  function tipRow(label, value) {
+    var d = document.createElement("div");
+    d.className = "tip-row";
+    var v = document.createElement("span");
+    v.className = "v";
+    v.textContent = value;
+    var k = document.createElement("span");
+    k.className = "k";
+    k.textContent = label;
+    d.appendChild(v);
+    d.appendChild(k);
+    return d;
+  }
+  function tipHint(text) {
+    var d = document.createElement("div");
+    d.className = "tip-hint";
+    d.textContent = text;
+    return d;
+  }
+
+  // ---------- KPI row ----------
+  function renderKpis(rows) {
+    var host = document.getElementById("kpis");
+    host.textContent = "";
+    var priced = rows.filter(function (m) { return typeof m.pin === "number" && m.pin > 0; })
+      .map(function (m) { return m.pin; }).sort(function (a, b) { return a - b; });
+    var median = priced.length ? priced[Math.floor(priced.length / 2)] : null;
+    var ctxs = rows.filter(function (m) { return m.ctx; }).map(function (m) { return m.ctx; })
+      .sort(function (a, b) { return b - a; });
+    var tiles = [
+      { label: "Models in view", value: fmtInt(rows.length),
+        sub: "of " + fmtInt(DATA.counts.models) + " scraped" },
+      { label: "Median input price", value: median === null ? "—" : fmtPrice(median),
+        unit: median === null ? "" : "/Mtok", sub: "excludes free tiers" },
+      { label: "Widest context", value: ctxs.length ? fmtCtx(ctxs[0]) : "—",
+        unit: ctxs.length ? "tokens" : "", sub: ctxs.length ? fmtInt(ctxs[0]) : "" },
+      { label: "Free models", value: fmtInt(rows.filter(function (m) { return m.free; }).length),
+        sub: "$0 in and out" },
+      { label: "Serving endpoints", value: fmtInt(DATA.counts.endpoints),
+        sub: DATA.counts.providers + " providers" }
+    ];
+    tiles.forEach(function (t) {
+      var d = document.createElement("div");
+      d.className = "kpi";
+      var l = document.createElement("p");
+      l.className = "kpi-label";
+      l.textContent = t.label;
+      var v = document.createElement("div");
+      v.className = "kpi-value";
+      v.appendChild(document.createTextNode(t.value));
+      if (t.unit) {
+        var u = document.createElement("span");
+        u.className = "unit";
+        u.textContent = " " + t.unit;
+        v.appendChild(u);
+      }
+      d.appendChild(l);
+      d.appendChild(v);
+      if (t.sub) {
+        var s = document.createElement("div");
+        s.className = "kpi-sub";
+        s.textContent = t.sub;
+        d.appendChild(s);
+      }
+      host.appendChild(d);
+    });
+  }
+
+  // ---------- scatter ----------
+  function renderScatter(rows) {
+    var host = document.getElementById("scatter");
+    host.textContent = "";
+    var key = state.axis;
+    var plotted = rows.filter(function (m) { return typeof m[key] === "number" && m.ctx; });
+    var narrow = host.clientWidth < 560;
+    var w = Math.max(300, host.clientWidth || 800);
+    var h = narrow ? 340 : 430;
+    var padL = 54, padR = narrow ? 14 : 22, padT = 12, padB = 52;
+    var gutter = narrow ? 30 : 38;          // the $0 lane
+    var plotL = padL + gutter;
+    var innerW = Math.max(40, w - plotL - padR);
+    var innerH = h - padT - padB;
+
+    var pmin = 0.01, pmax = 200;
+    var cmin = 3500, cmax = 2400000;
+    function xOf(v) {
+      if (v <= 0) return padL + gutter / 2;
+      var t = (Math.log10(v) - Math.log10(pmin)) / (Math.log10(pmax) - Math.log10(pmin));
+      return plotL + Math.min(1, Math.max(0, t)) * innerW;
+    }
+    function yOf(v) {
+      var t = (Math.log10(v) - Math.log10(cmin)) / (Math.log10(cmax) - Math.log10(cmin));
+      return padT + innerH - Math.min(1, Math.max(0, t)) * innerH;
+    }
+
+    var svg = svgRoot(w, h);
+    svg.setAttribute("aria-label",
+      "Scatter plot of " + (key === "pin" ? "input" : "output") +
+      " price per million tokens against context window for " + plotted.length + " models.");
+
+    // y grid + ticks
+    [4096, 16384, 65536, 262144, 1000000, 2000000].forEach(function (c) {
+      if (c < cmin || c > cmax) return;
+      var y = yOf(c);
+      svg.appendChild(el("line", { x1: padL, y1: y, x2: w - padR, y2: y, class: "gridline" }));
+      svg.appendChild(el("text", { x: padL - 8, y: y + 3.5, class: "tick", "text-anchor": "end" }, fmtCtx(c)));
+    });
+    // x ticks
+    var xticks = narrow ? [0.1, 1, 100] : [0.1, 1, 10, 100];
+    xticks.forEach(function (p) {
+      var x = xOf(p);
+      svg.appendChild(el("line", { x1: x, y1: padT, x2: x, y2: padT + innerH, class: "gridline" }));
+      svg.appendChild(el("text", { x: x, y: padT + innerH + 16, class: "tick", "text-anchor": "middle" },
+        "$" + p));
+    });
+    // free gutter: its own lane, separated by the axis hairline
+    var gx = padL + gutter;
+    svg.appendChild(el("line", { x1: gx, y1: padT, x2: gx, y2: padT + innerH, class: "axisline" }));
+    svg.appendChild(el("text", { x: padL + gutter / 2, y: padT + innerH + 16, class: "tick", "text-anchor": "middle" }, "$0"));
+    // axes
+    svg.appendChild(el("line", { x1: padL, y1: padT + innerH, x2: w - padR, y2: padT + innerH, class: "axisline" }));
+    svg.appendChild(el("text", { x: padL, y: h - 8, class: "axis-title" },
+      (key === "pin" ? "Input" : "Output") + " price, USD per million tokens (log)"));
+    var yt = el("text", { x: 0, y: 0, class: "axis-title", "text-anchor": "middle",
+      transform: "translate(13," + (padT + innerH / 2) + ") rotate(-90)" }, "Context window (log)");
+    svg.appendChild(yt);
+
+    // dots, drawn cheapest-last so the pinned one is reachable
+    var sel = null;
+    plotted.forEach(function (m) {
+      var cx = xOf(m[key]), cy = yOf(m.ctx);
+      var isSel = state.selected === m.id;
+      if (isSel) { sel = { m: m, cx: cx, cy: cy }; }
+      var dot = el("circle", {
+        cx: cx, cy: cy, r: isSel ? 7.5 : 4.5,
+        class: "dot" + (isSel ? " is-sel" : ""),
+        fill: CLASS_BY_KEY[m.cls].color
+      });
+      svg.appendChild(dot);
+    });
+
+    // pinned model gets a leader label, so identity is never hover-only
+    if (sel) {
+      var lx = sel.cx + 12, anchor = "start";
+      if (lx > w - padR - 120) { lx = sel.cx - 12; anchor = "end"; }
+      svg.appendChild(el("line", {
+        x1: sel.cx, y1: sel.cy, x2: lx + (anchor === "start" ? -3 : 3), y2: sel.cy,
+        stroke: "var(--ink)", "stroke-width": 1
+      }));
+      svg.appendChild(el("text", {
+        x: lx, y: sel.cy - 8, class: "callout", "text-anchor": anchor
+      }, sel.m.id));
+      svg.appendChild(el("text", {
+        x: lx, y: sel.cy + 6, class: "tick", "text-anchor": anchor
+      }, fmtPrice(sel.m[key]) + "/Mtok · " + fmtCtx(sel.m.ctx)));
+    }
+
+    // hit layer last: a 24px target regardless of dot size
+    plotted.forEach(function (m) {
+      var cx = xOf(m[key]), cy = yOf(m.ctx);
+      var hit = el("circle", { cx: cx, cy: cy, r: 12, class: "hit", tabindex: "0", role: "button" });
+      hit.setAttribute("aria-label", m.name + ", " + fmtPrice(m[key]) + " per million tokens, " +
+        fmtCtx(m.ctx) + " context");
+      function show(ev) {
+        var rows2 = [
+          tipName(m.name, CLASS_BY_KEY[m.cls].color),
+          tipRow("in, per Mtok", fmtPrice(m.pin)),
+          tipRow("out, per Mtok", fmtPrice(m.pout)),
+          tipRow("context", fmtCtx(m.ctx) + " tok")
+        ];
+        if (m.nprov) {
+          rows2.push(tipRow("providers", String(m.nprov)));
+          if (m.minprov !== null && m.minprov !== m.pin) {
+            rows2.push(tipRow("cheapest provider", fmtPrice(m.minprov)));
+          }
+        }
+        rows2.push(tipHint(CLASS_BY_KEY[m.cls].label + (m.tools ? " · tools" : "") +
+          (m.reason ? " · reasoning" : "")));
+        tipShow(rows2);
+        if (ev && ev.clientX !== undefined) tipMove(ev);
+      }
+      hit.addEventListener("pointerenter", show);
+      hit.addEventListener("pointermove", tipMove);
+      hit.addEventListener("pointerleave", tipHide);
+      hit.addEventListener("focus", function () {
+        show(null);
+        var r = hit.getBoundingClientRect();
+        tipMove({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 });
+      });
+      hit.addEventListener("blur", tipHide);
+      hit.addEventListener("click", function () { select(m.id); });
+      hit.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(m.id); }
+      });
+      svg.appendChild(hit);
+    });
+
+    host.appendChild(svg);
+
+    // legend carries per-class counts for the current slice
+    var legend = document.getElementById("scatter-legend");
+    legend.textContent = "";
+    CLASSES.forEach(function (c) {
+      var n = plotted.filter(function (m) { return m.cls === c.key; }).length;
+      var li = document.createElement("li");
+      var sw = document.createElement("span");
+      sw.className = "swatch";
+      sw.style.background = c.color;
+      var lab = document.createElement("span");
+      lab.textContent = c.label;
+      var cnt = document.createElement("span");
+      cnt.className = "count";
+      cnt.textContent = n;
+      li.appendChild(sw);
+      li.appendChild(lab);
+      li.appendChild(cnt);
+      legend.appendChild(li);
+    });
+    var hidden = rows.length - plotted.length;
+    if (hidden > 0) {
+      var li2 = document.createElement("li");
+      li2.className = "count";
+      li2.textContent = hidden + " without a fixed " + (key === "pin" ? "input" : "output") +
+        " price — see the table";
+      legend.appendChild(li2);
+    }
+  }
+
+  // ---------- provider spread ----------
+  var PROV_CAP = 14;
+  function providerRows() {
+    var id = state.selected;
+    if (!id) return null;
+    return (ENDPOINTS[id] || []).filter(function (e) { return typeof e.pin === "number"; });
+  }
+
+  function renderProvider() {
+    var title = document.getElementById("prov-title");
+    var note = document.getElementById("prov-note");
+    var plot = document.getElementById("prov-plot");
+    var tw = document.getElementById("prov-tablewrap");
+    plot.textContent = "";
+    tw.textContent = "";
+    var id = state.selected;
+    var model = null;
+    for (var i = 0; i < MODELS.length; i++) { if (MODELS[i].id === id) { model = MODELS[i]; break; } }
+    var eps = providerRows();
+
+    if (!model || !eps || !eps.length) {
+      title.textContent = "Provider spread";
+      note.textContent = model
+        ? "No priced endpoint is listed for " + model.id + "."
+        : "Pick a model — click a point in the chart above or a row in the table — to compare what each provider charges to serve it.";
+      plot.hidden = false;
+      tw.hidden = true;
+      return;
+    }
+
+    title.textContent = "Provider spread";
+    var lo = eps[0].pin, hi = eps[eps.length - 1].pin;
+    var spread = lo > 0 ? (hi / lo) : null;
+    note.textContent = model.name + " — " + eps.length + " priced " +
+      (eps.length === 1 ? "endpoint" : "endpoints") +
+      (spread && spread > 1.02
+        ? ", " + fmtPrice(lo) + " to " + fmtPrice(hi) + " per Mtok (" + spread.toFixed(1) + "×)"
+        : ", all at " + fmtPrice(lo) + " per Mtok") + ".";
+
+    if (state.provView === "table") {
+      plot.hidden = true;
+      tw.hidden = false;
+      var cols = [
+        { k: "prov", t: "Provider" }, { k: "pin", t: "In $/Mtok", n: 1 },
+        { k: "pout", t: "Out $/Mtok", n: 1 }, { k: "ctx", t: "Context", n: 1 },
+        { k: "quant", t: "Quant" }, { k: "up", t: "Uptime 1d", n: 1 }
+      ];
+      tw.appendChild(simpleTable(cols, eps.map(function (e) {
+        return {
+          prov: e.prov + (e.tier ? " ·tiered" : ""),
+          pin: fmtPrice(e.pin), pout: fmtPrice(e.pout), ctx: fmtCtx(e.ctx),
+          quant: e.quant || "—",
+          up: e.up === null || e.up === undefined ? "—" : e.up.toFixed(2) + "%"
+        };
+      })));
+      return;
+    }
+
+    plot.hidden = false;
+    tw.hidden = true;
+    var shown = eps.slice(0, PROV_CAP);
+    var w = Math.max(280, plot.clientWidth || 520);
+    var rowH = 26, barH = 14;
+    var padL = Math.min(158, Math.max(96, Math.round(w * 0.3)));
+    var padR = 62, padT = 6, padB = 46;
+    var h = padT + shown.length * rowH + padB;
+    var innerW = Math.max(30, w - padL - padR);
+    var max = shown[shown.length - 1].pin || 1;
+    if (max <= 0) max = 1;
+
+    var svg = svgRoot(w, h);
+    svg.setAttribute("aria-label", "Input price per million tokens by provider for " + model.name);
+
+    var ticks = [0, max / 2, max];
+    ticks.forEach(function (t) {
+      var x = padL + (t / max) * innerW;
+      svg.appendChild(el("line", {
+        x1: x, y1: padT, x2: x, y2: padT + shown.length * rowH, class: "gridline"
+      }));
+      svg.appendChild(el("text", {
+        x: x, y: h - padB + 17, class: "tick", "text-anchor": t === 0 ? "start" : (t === max ? "end" : "middle")
+      }, fmtPrice(t)));
+    });
+    svg.appendChild(el("text", { x: padL, y: h - 6, class: "axis-title" }, "Input price, USD per Mtok"));
+
+    shown.forEach(function (e, i) {
+      var y = padT + i * rowH + (rowH - barH) / 2;
+      var bw = Math.max(2, (e.pin / max) * innerW);
+      var name = e.prov.length > 22 ? e.prov.slice(0, 21) + "…" : e.prov;
+      svg.appendChild(el("text", {
+        x: padL - 10, y: y + barH / 2 + 4, class: "row-label", "text-anchor": "end"
+      }, name));
+      // 4px rounded data-end, square at the baseline
+      var d = "M" + padL + " " + y +
+        " H" + (padL + Math.max(0, bw - 4)) +
+        " a4,4 0 0 1 4,4 V" + (y + barH - 4) +
+        " a4,4 0 0 1 -4,4 H" + padL + " Z";
+      svg.appendChild(el("path", { d: d, fill: "var(--s1)" }));
+      svg.appendChild(el("text", {
+        x: padL + bw + 8, y: y + barH / 2 + 4, class: "bar-label"
+      }, fmtPrice(e.pin)));
+      var hit = el("rect", {
+        x: padL, y: padT + i * rowH, width: innerW, height: rowH,
+        class: "barhit", fill: "transparent", tabindex: "0"
+      });
+      hit.setAttribute("aria-label", e.prov + ", " + fmtPrice(e.pin) + " per million input tokens");
+      function show(ev) {
+        var rws = [
+          tipName(e.prov, "var(--s1)"),
+          tipRow("in, per Mtok", fmtPrice(e.pin)),
+          tipRow("out, per Mtok", fmtPrice(e.pout)),
+          tipRow("context", fmtCtx(e.ctx) + " tok")
+        ];
+        if (e.up !== null && e.up !== undefined) rws.push(tipRow("uptime, 1d", e.up.toFixed(2) + "%"));
+        if (e.quant && e.quant !== "unknown") rws.push(tipRow("quantization", e.quant));
+        if (e.tier) rws.push(tipHint("Tiered: costs more above a prompt-token threshold."));
+        tipShow(rws);
+        if (ev && ev.clientX !== undefined) tipMove(ev);
+      }
+      hit.addEventListener("pointerenter", show);
+      hit.addEventListener("pointermove", tipMove);
+      hit.addEventListener("pointerleave", tipHide);
+      hit.addEventListener("focus", function () {
+        show(null);
+        var r = hit.getBoundingClientRect();
+        tipMove({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 });
+      });
+      hit.addEventListener("blur", tipHide);
+      svg.appendChild(hit);
+    });
+    plot.appendChild(svg);
+
+    if (eps.length > PROV_CAP) {
+      var more = document.createElement("p");
+      more.className = "note";
+      more.style.margin = "10px 0 0";
+      more.textContent = "Showing the " + PROV_CAP + " cheapest of " + eps.length +
+        " endpoints. Switch to Table for all of them.";
+      plot.appendChild(more);
+    }
+  }
+
+  // ---------- rankings ----------
+  function renderRankings() {
+    var plot = document.getElementById("rk-plot");
+    var tw = document.getElementById("rk-tablewrap");
+    var note = document.getElementById("rk-note");
+    plot.textContent = "";
+    tw.textContent = "";
+
+    if (state.rkView === "tbl") {
+      plot.hidden = true;
+      tw.hidden = false;
+      note.textContent = "The full leaderboard as served, including the prompt/completion split.";
+      var cols = [
+        { k: "rank", t: "#", n: 1 }, { k: "name", t: "Model" },
+        { k: "tok", t: "Tokens", n: 1 }, { k: "req", t: "Requests", n: 1 },
+        { k: "chg", t: "Change", n: 1 }
+      ];
+      tw.appendChild(simpleTable(cols, RANKS.map(function (r) {
+        return {
+          rank: r.rank, name: r.name, tok: fmtTokens(r.tok),
+          req: fmtTokens(r.req), chg: fmtPct(r.change)
+        };
+      })));
+      return;
+    }
+
+    plot.hidden = false;
+    tw.hidden = true;
+    var isVol = state.rkView === "vol";
+    note.textContent = isVol
+      ? "Tokens routed per model on " + (DATA.rankings.length ? "the latest day OpenRouter publishes" : "the latest day") +
+        ". Prompt and completion tokens combined."
+      : "The change figure OpenRouter publishes beside each rank, as a fraction of the previous figure. It does not document which window that compares against, so the sign and the magnitude are what can be trusted here, not the period.";
+
+    var rows = RANKS.slice(0, 20);
+    var w = Math.max(280, plot.clientWidth || 520);
+    var rowH = 24, barH = 13;
+    var padL = Math.min(150, Math.max(92, Math.round(w * 0.29)));
+    var padR = 56, padT = 6, padB = 46;
+    var h = padT + rows.length * rowH + padB;
+    var innerW = Math.max(30, w - padL - padR);
+    var svg = svgRoot(w, h);
+
+    if (isVol) {
+      var max = Math.max.apply(null, rows.map(function (r) { return r.tok; }));
+      svg.setAttribute("aria-label", "Total tokens routed per model, top 20.");
+      [0, max / 2, max].forEach(function (t) {
+        var x = padL + (t / max) * innerW;
+        svg.appendChild(el("line", { x1: x, y1: padT, x2: x, y2: padT + rows.length * rowH, class: "gridline" }));
+        svg.appendChild(el("text", {
+          x: x, y: h - padB + 17, class: "tick",
+          "text-anchor": t === 0 ? "start" : (t === max ? "end" : "middle")
+        }, fmtTokens(t)));
+      });
+      svg.appendChild(el("text", { x: padL, y: h - 6, class: "axis-title" }, "Tokens routed, one day"));
+    } else {
+      var lo = Math.min.apply(null, rows.map(function (r) { return r.change; }));
+      var hi = Math.max.apply(null, rows.map(function (r) { return r.change; }));
+      var span = Math.max(Math.abs(lo), Math.abs(hi)) * 1.08 || 1;
+      svg.setAttribute("aria-label", "Reported usage change per model, top 20, positive and negative.");
+      var zero = padL + (span / (2 * span)) * innerW;
+      svg.appendChild(el("line", { x1: zero, y1: padT, x2: zero, y2: padT + rows.length * rowH, class: "axisline" }));
+      svg.appendChild(el("text", { x: zero, y: h - padB + 17, class: "tick", "text-anchor": "middle" }, "0%"));
+      svg.appendChild(el("text", { x: padL, y: h - padB + 17, class: "tick", "text-anchor": "start" }, fmtPct(-span)));
+      svg.appendChild(el("text", { x: padL + innerW, y: h - padB + 17, class: "tick", "text-anchor": "end" }, fmtPct(span)));
+      svg.appendChild(el("text", { x: padL, y: h - 6, class: "axis-title" }, "Reported change, fraction of previous"));
+    }
+
+    rows.forEach(function (r, i) {
+      var y = padT + i * rowH + (rowH - barH) / 2;
+      var label = r.name.length > 21 ? r.name.slice(0, 20) + "…" : r.name;
+      svg.appendChild(el("text", {
+        x: padL - 10, y: y + barH / 2 + 4, class: "row-label", "text-anchor": "end"
+      }, label));
+
+      var x0, bw, fill, lx, anchor, text;
+      if (isVol) {
+        var max2 = Math.max.apply(null, rows.map(function (q) { return q.tok; }));
+        x0 = padL;
+        bw = Math.max(2, (r.tok / max2) * innerW);
+        fill = "var(--s1)";
+        lx = x0 + bw + 8; anchor = "start"; text = fmtTokens(r.tok);
+        var d1 = "M" + x0 + " " + y + " H" + (x0 + Math.max(0, bw - 4)) +
+          " a4,4 0 0 1 4,4 V" + (y + barH - 4) + " a4,4 0 0 1 -4,4 H" + x0 + " Z";
+        svg.appendChild(el("path", { d: d1, fill: fill }));
+      } else {
+        var lo2 = Math.min.apply(null, rows.map(function (q) { return q.change; }));
+        var hi2 = Math.max.apply(null, rows.map(function (q) { return q.change; }));
+        var span2 = Math.max(Math.abs(lo2), Math.abs(hi2)) * 1.08 || 1;
+        var zero2 = padL + innerW / 2;
+        var half = innerW / 2;
+        bw = Math.max(2, (Math.abs(r.change) / span2) * half);
+        var pos = r.change >= 0;
+        fill = pos ? "var(--s1)" : "var(--neg)";
+        x0 = pos ? zero2 : zero2 - bw;
+        var d2 = pos
+          ? "M" + zero2 + " " + y + " H" + (zero2 + Math.max(0, bw - 4)) +
+            " a4,4 0 0 1 4,4 V" + (y + barH - 4) + " a4,4 0 0 1 -4,4 H" + zero2 + " Z"
+          : "M" + zero2 + " " + y + " H" + (zero2 - Math.max(0, bw - 4)) +
+            " a4,4 0 0 0 -4,4 V" + (y + barH - 4) + " a4,4 0 0 0 4,4 H" + zero2 + " Z";
+        svg.appendChild(el("path", { d: d2, fill: fill }));
+        lx = pos ? zero2 + bw + 8 : zero2 - bw - 8;
+        anchor = pos ? "start" : "end";
+        text = fmtPct(r.change);
+      }
+      svg.appendChild(el("text", { x: lx, y: y + barH / 2 + 4, class: "bar-label", "text-anchor": anchor }, text));
+
+      var hit = el("rect", {
+        x: padL, y: padT + i * rowH, width: innerW, height: rowH,
+        class: "barhit", fill: "transparent", tabindex: "0"
+      });
+      hit.setAttribute("aria-label", "Rank " + r.rank + ", " + r.name + ", " +
+        fmtTokens(r.tok) + " tokens, change " + fmtPct(r.change));
+      if (r.id) hit.style.cursor = "pointer";
+      function show(ev) {
+        var rws = [
+          tipName("#" + r.rank + "  " + r.name, isVol ? "var(--s1)" : (r.change >= 0 ? "var(--s1)" : "var(--neg)")),
+          tipRow("tokens", fmtTokens(r.tok)),
+          tipRow("prompt / completion", fmtTokens(r.pt) + " / " + fmtTokens(r.ct)),
+          tipRow("requests", fmtTokens(r.req)),
+          tipRow("reported change", fmtPct(r.change))
+        ];
+        if (r.calls) rws.push(tipRow("tool calls", fmtTokens(r.calls)));
+        rws.push(tipHint(r.id ? "Click to pin this model." : "Not matched to a catalogue entry."));
+        tipShow(rws);
+        if (ev && ev.clientX !== undefined) tipMove(ev);
+      }
+      hit.addEventListener("pointerenter", show);
+      hit.addEventListener("pointermove", tipMove);
+      hit.addEventListener("pointerleave", tipHide);
+      hit.addEventListener("focus", function () {
+        show(null);
+        var b = hit.getBoundingClientRect();
+        tipMove({ clientX: b.left + b.width / 2, clientY: b.top + b.height / 2 });
+      });
+      hit.addEventListener("blur", tipHide);
+      if (r.id) {
+        hit.addEventListener("click", function () { select(r.id); });
+        hit.addEventListener("keydown", function (ev) {
+          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(r.id); }
+        });
+      }
+      svg.appendChild(hit);
+    });
+    plot.appendChild(svg);
+  }
+
+  // ---------- small table helper ----------
+  function simpleTable(cols, rows) {
+    var wrap = document.createElement("div");
+    wrap.className = "tablewrap";
+    var t = document.createElement("table");
+    t.className = "datatable";
+    var thead = document.createElement("thead");
+    var tr = document.createElement("tr");
+    cols.forEach(function (c) {
+      var th = document.createElement("th");
+      th.textContent = c.t;
+      if (c.n) th.style.textAlign = "right";
+      tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+    t.appendChild(thead);
+    var tb = document.createElement("tbody");
+    rows.forEach(function (r) {
+      var row = document.createElement("tr");
+      cols.forEach(function (c) {
+        var td = document.createElement("td");
+        if (c.n) td.className = "num";
+        td.textContent = r[c.k] === null || r[c.k] === undefined ? "—" : String(r[c.k]);
+        row.appendChild(td);
+      });
+      tb.appendChild(row);
+    });
+    t.appendChild(tb);
+    wrap.appendChild(t);
+    return wrap;
+  }
+
+  // ---------- main table ----------
+  var COLUMNS = [
+    { k: "id", t: "Model", cls: "id" },
+    { k: "author", t: "Author" },
+    { k: "pin", t: "In $/Mtok", n: 1, fmt: fmtPrice },
+    { k: "pout", t: "Out $/Mtok", n: 1, fmt: fmtPrice },
+    { k: "minprov", t: "Min $/Mtok", n: 1, fmt: fmtPrice },
+    { k: "ctx", t: "Context", n: 1, fmt: fmtCtx },
+    { k: "out", t: "Max out", n: 1, fmt: fmtCtx },
+    { k: "nprov", t: "Providers", n: 1 },
+    { k: "cls", t: "Inputs", fmt: function (v) { return CLASS_BY_KEY[v].label; } },
+    { k: "caps", t: "Capabilities" }
+  ];
+
+  function renderTable(rows) {
+    var table = document.getElementById("model-table");
+    var thead = table.querySelector("thead");
+    var tbody = table.querySelector("tbody");
+    var empty = document.getElementById("table-empty");
+    thead.textContent = "";
+    tbody.textContent = "";
+    document.getElementById("table-count").textContent = rows.length + " rows";
+
+    var tr = document.createElement("tr");
+    COLUMNS.forEach(function (c) {
+      var th = document.createElement("th");
+      th.textContent = c.t;
+      if (c.n) th.style.textAlign = "right";
+      if (c.k !== "caps") {
+        th.className = "sortable";
+        th.setAttribute("role", "button");
+        th.tabIndex = 0;
+        th.setAttribute("aria-sort", state.sort === c.k ? (state.dir === 1 ? "ascending" : "descending") : "none");
+        if (state.sort === c.k) {
+          var a = document.createElement("span");
+          a.className = "arrow";
+          a.textContent = state.dir === 1 ? " ↑" : " ↓";
+          th.appendChild(a);
+        }
+        var go = function () {
+          if (state.sort === c.k) state.dir = -state.dir;
+          else { state.sort = c.k; state.dir = 1; }
+          render();
+        };
+        th.addEventListener("click", go);
+        th.addEventListener("keydown", function (ev) {
+          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); go(); }
+        });
+      }
+      tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+
+    if (!rows.length) {
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+
+    var sorted = rows.slice().sort(function (a, b) {
+      var k = state.sort, va = a[k], vb = b[k];
+      var na = va === null || va === undefined, nb = vb === null || vb === undefined;
+      if (na && nb) return 0;
+      if (na) return 1;
+      if (nb) return -1;
+      if (typeof va === "number" && typeof vb === "number") return (va - vb) * state.dir;
+      return String(va).localeCompare(String(vb)) * state.dir;
+    });
+
+    sorted.forEach(function (m) {
+      var row = document.createElement("tr");
+      if (state.selected === m.id) row.className = "is-sel";
+      COLUMNS.forEach(function (c) {
+        var td = document.createElement("td");
+        if (c.n) td.className = "num";
+        if (c.cls) td.className = c.cls;
+        if (c.k === "caps") {
+          var caps = [];
+          if (m.tools) caps.push("tools");
+          if (m.reason) caps.push(m.effort ? "reasoning:" + m.effort : "reasoning");
+          if (m.free) caps.push("free");
+          if (m.var) caps.push("dynamic price");
+          if (!caps.length) { td.textContent = "—"; }
+          else {
+            caps.forEach(function (cap, i) {
+              var s = document.createElement("span");
+              s.className = "flag";
+              s.textContent = cap;
+              if (i) s.style.marginLeft = "4px";
+              td.appendChild(s);
+            });
+          }
+        } else {
+          var v = m[c.k];
+          td.textContent = c.fmt ? c.fmt(v) : (v === null || v === undefined ? "—" : String(v));
+        }
+        row.appendChild(td);
+      });
+      row.addEventListener("click", function () { select(m.id); });
+      tbody.appendChild(row);
+    });
+  }
+
+  // ---------- selection ----------
+  function select(id) {
+    state.selected = state.selected === id ? null : id;
+    render();
+  }
+
+  // ---------- footnotes ----------
+  function renderFootnotes() {
+    var host = document.getElementById("footnotes");
+    host.textContent = "";
+    var notes = [
+      "Prices are converted to USD per million tokens. OpenRouter quotes them per token, which reads as a wall of zeros.",
+      "Five dynamic routers (openrouter/auto and siblings) report a price of −1 per token, a sentinel meaning the cost depends on where the request lands. They carry a dynamic price flag and are absent from the scatter, which needs a number.",
+      "167 of the 1,314 endpoints charge more above a prompt-token threshold. The provider chart shows the base tier and marks those rows ·tiered; the full override is in the scraped JSON.",
+      "Context is the model's advertised maximum. A given provider often serves less — the provider table's own context column is the one that binds.",
+      "The leaderboard is a single day's top 20, the most recent OpenRouter renders. It is a snapshot, not a series.",
+      "Latency and throughput are absent because the API returns null for them on every endpoint."
+    ];
+    notes.forEach(function (n) {
+      var li = document.createElement("li");
+      li.textContent = n;
+      host.appendChild(li);
+    });
+  }
+
+  // ---------- render ----------
+  function render() {
+    var rows = filtered();
+    renderKpis(rows);
+    renderScatter(rows);
+    renderProvider();
+    renderRankings();
+    renderTable(rows);
+
+    var bits = [rows.length + " of " + MODELS.length + " models"];
+    if (state.selected) bits.push("pinned: " + state.selected);
+    else bits.push("no model pinned");
+    var lim = priceLimit();
+    if (lim !== null) bits.push("input price ≤ " + fmtPrice(lim) + "/Mtok");
+    document.getElementById("matchline").textContent = bits.join("  ·  ");
+  }
+
+  // ---------- wiring ----------
+  function populateAuthors() {
+    var authors = {};
+    MODELS.forEach(function (m) { authors[m.author] = (authors[m.author] || 0) + 1; });
+    var sel = document.getElementById("f-author");
+    var keep = state.author;
+    sel.textContent = "";
+    var any = document.createElement("option");
+    any.value = "";
+    any.textContent = "All authors";
+    sel.appendChild(any);
+    Object.keys(authors).sort(function (a, b) {
+      return authors[b] - authors[a] || a.localeCompare(b);
+    }).forEach(function (a) {
+      var o = document.createElement("option");
+      o.value = a;
+      o.textContent = a + " (" + authors[a] + ")";
+      sel.appendChild(o);
+    });
+    // a refreshed catalogue may have dropped the author that was selected
+    if (keep && !authors[keep]) { state.author = ""; }
+    sel.value = state.author;
+  }
+
+  function initControls() {
+    populateAuthors();
+    var sel = document.getElementById("f-author");
+    var q = document.getElementById("f-q");
+    q.addEventListener("input", function () { state.q = q.value; render(); });
+    sel.addEventListener("change", function () { state.author = sel.value; render(); });
+    var inp = document.getElementById("f-input");
+    inp.addEventListener("change", function () { state.input = inp.value; render(); });
+    var ctx = document.getElementById("f-ctx");
+    ctx.addEventListener("change", function () { state.minCtx = Number(ctx.value); render(); });
+
+    var price = document.getElementById("f-price");
+    var priceOut = document.getElementById("f-price-out");
+    function priceFromSlider() {
+      var idx = Math.round(Number(price.value) / 100 * (PRICE_STOPS.length - 1));
+      var v = PRICE_STOPS[idx];
+      state.maxPrice = v;
+      priceOut.textContent = v === null ? "no limit" : "≤ " + fmtPrice(v) + "/Mtok";
+    }
+    price.addEventListener("input", function () { priceFromSlider(); render(); });
+    priceFromSlider();
+
+    ["tools", "reason", "free"].forEach(function (k) {
+      var box = document.getElementById("f-" + k);
+      box.addEventListener("change", function () { state[k] = box.checked; render(); });
+    });
+
+    document.getElementById("f-reset").addEventListener("click", function () {
+      state.q = ""; state.author = ""; state.input = ""; state.minCtx = 0;
+      state.maxPrice = null; state.tools = false; state.reason = false;
+      state.free = false; state.selected = null;
+      q.value = ""; sel.value = ""; inp.value = ""; ctx.value = "0";
+      price.value = 100; priceFromSlider();
+      ["tools", "reason", "free"].forEach(function (k) {
+        document.getElementById("f-" + k).checked = false;
+      });
+      render();
+    });
+
+    function pair(aId, bId, apply) {
+      var a = document.getElementById(aId), b = document.getElementById(bId);
+      a.addEventListener("click", function () {
+        a.setAttribute("aria-pressed", "true");
+        b.setAttribute("aria-pressed", "false");
+        apply(true);
+      });
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", "true");
+        a.setAttribute("aria-pressed", "false");
+        apply(false);
+      });
+    }
+    pair("ax-in", "ax-out", function (isIn) {
+      state.axis = isIn ? "pin" : "pout";
+      render();
+    });
+    pair("prov-chart", "prov-table", function (isChart) {
+      state.provView = isChart ? "chart" : "table";
+      renderProvider();
+    });
+
+    var rkBtns = { vol: document.getElementById("rk-vol"), chg: document.getElementById("rk-chg"), tbl: document.getElementById("rk-tbl") };
+    Object.keys(rkBtns).forEach(function (k) {
+      rkBtns[k].addEventListener("click", function () {
+        state.rkView = k;
+        Object.keys(rkBtns).forEach(function (j) {
+          rkBtns[j].setAttribute("aria-pressed", j === k ? "true" : "false");
+        });
+        renderRankings();
+      });
+    });
+  }
+
+  // ---------- live re-scrape ----------
+  // The three JSON APIs send access-control-allow-origin:*, so a browser may call
+  // them directly. Two things a page cannot do: /rankings sends no CORS header (and
+  // its data is buried in an RSC payload), and the published artifact runs under a
+  // CSP that blocks fetch to every non-CDN host. Both are reported, not papered over.
+  var OR = "https://openrouter.ai";
+  var scrape = { running: false, abort: null };
+
+  var ui = {
+    btn: document.getElementById("rescrape"),
+    stop: document.getElementById("rescrape-stop"),
+    eps: document.getElementById("rescrape-eps"),
+    meter: document.getElementById("rescrape-meter"),
+    bar: document.getElementById("rescrape-bar"),
+    status: document.getElementById("rescrape-status"),
+    dl: document.getElementById("rescrape-dl")
+  };
+
+  function say(msg, tone) {
+    ui.status.textContent = msg;
+    ui.status.className = "source-status" + (tone ? " is-" + tone : "");
+  }
+  function progress(done, total) {
+    if (total === null) { ui.meter.hidden = true; return; }
+    ui.meter.hidden = false;
+    ui.bar.style.width = Math.round((done / total) * 100) + "%";
+  }
+
+  function sandboxed() {
+    var p = location.protocol;
+    if (p === "file:") return false;
+    var h = location.hostname;
+    if (h === "localhost" || h === "127.0.0.1" || h === "[::1]") return false;
+    return true;
+  }
+
+  function getJSON(path, tries) {
+    tries = tries || 3;
+    var attempt = 0;
+    function once() {
+      attempt++;
+      return fetch(OR + path, { signal: scrape.abort ? scrape.abort.signal : undefined })
+        .then(function (r) {
+          if (r.status === 429 && attempt < tries) {
+            var wait = Number(r.headers.get("Retry-After")) || attempt * 2;
+            return new Promise(function (res) { setTimeout(res, wait * 1000); }).then(once);
+          }
+          if (!r.ok) throw new Error("HTTP " + r.status + " on " + path);
+          return r.json();
+        })
+        .catch(function (e) {
+          if (e && e.name === "AbortError") throw e;
+          if (attempt < tries) {
+            return new Promise(function (res) { setTimeout(res, attempt * 900); }).then(once);
+          }
+          throw e;
+        });
+    }
+    return once();
+  }
+
+  // per-token -> per-million, with the negative sentinel kept out of the numbers
+  function perM(v) {
+    var f = parseFloat(v);
+    if (!isFinite(f) || f < 0) return null;
+    return Math.round(f * 1e6 * 1e6) / 1e6;
+  }
+  function hasSentinel(pricing) {
+    return ["prompt", "completion"].some(function (k) {
+      var f = parseFloat(pricing[k]);
+      return isFinite(f) && f < 0;
+    });
+  }
+
+  function flattenModel(m) {
+    var pr = m.pricing || {}, arch = m.architecture || {}, top = m.top_provider || {};
+    var params = m.supported_parameters || [], re = m.reasoning || {};
+    var pin = parseFloat(pr.prompt), pout = parseFloat(pr.completion);
+    return {
+      id: m.id,
+      name: m.name,
+      author: (m.id || "/").split("/")[0],
+      ctx: m.context_length || null,
+      out: top.max_completion_tokens || null,
+      pin: perM(pr.prompt),
+      pout: perM(pr.completion),
+      mod: arch.modality || "",
+      tok: arch.tokenizer || "",
+      tools: params.indexOf("tools") > -1,
+      reason: params.indexOf("reasoning") > -1,
+      effort: re.default_effort || "",
+      efforts: (re.supported_efforts || []).join("|"),
+      free: pin === 0 && pout === 0,
+      "var": hasSentinel(pr),
+      cache: perM(pr.input_cache_read),
+      cutoff: m.knowledge_cutoff || "",
+      canon: m.canonical_slug || ""
+    };
+  }
+
+  function flattenEndpoints(data) {
+    var out = (data.endpoints || []).map(function (ep) {
+      var pr = ep.pricing || {};
+      return {
+        prov: ep.provider_name,
+        pin: perM(pr.prompt),
+        pout: perM(pr.completion),
+        ctx: ep.context_length || null,
+        quant: ep.quantization || "",
+        up: typeof ep.uptime_last_1d === "number" ? ep.uptime_last_1d : null,
+        tier: !!(pr.overrides && pr.overrides.length)
+      };
+    });
+    out.sort(function (a, b) {
+      if (a.pin === null) return 1;
+      if (b.pin === null) return -1;
+      return a.pin - b.pin;
+    });
+    return out;
+  }
+
+  // bounded-concurrency map that stops cleanly on abort
+  function pool(items, workers, fn, onTick) {
+    var i = 0, done = 0, failed = 0;
+    function next() {
+      if (i >= items.length) return Promise.resolve();
+      var idx = i++;
+      return fn(items[idx])
+        .catch(function (e) {
+          if (e && e.name === "AbortError") throw e;
+          failed++;
+        })
+        .then(function () {
+          done++;
+          if (onTick) onTick(done, items.length, failed);
+          return next();
+        });
+    }
+    var lanes = [];
+    for (var w = 0; w < Math.min(workers, items.length); w++) lanes.push(next());
+    return Promise.all(lanes).then(function () { return failed; });
+  }
+
+  function finishScrape(msg, tone) {
+    scrape.running = false;
+    scrape.abort = null;
+    ui.btn.disabled = false;
+    ui.btn.textContent = "Re-scrape live";
+    ui.stop.hidden = true;
+    progress(0, null);
+    say(msg, tone);
+  }
+
+  function runScrape() {
+    if (scrape.running) return;
+    scrape.running = true;
+    scrape.abort = new AbortController();
+    ui.btn.disabled = true;
+    ui.stop.hidden = false;
+    ui.dl.hidden = true;
+    var wantEps = ui.eps.checked;
+    var started = Date.now();
+    say("fetching the model catalogue…");
+
+    getJSON("/api/v1/models")
+      .then(function (res) {
+        var fresh = (res.data || []).map(flattenModel);
+        fresh.sort(function (a, b) { return (a.id || "").localeCompare(b.id || ""); });
+        MODELS = fresh;
+        DATA.models = fresh;
+        DATA.counts.models = fresh.length;
+        if (!wantEps) { ENDPOINTS = {}; DATA.endpoints = ENDPOINTS; DATA.counts.endpoints = 0; }
+        decorate();
+        if (state.selected && !ENDPOINTS[state.selected]) {
+          var still = MODELS.some(function (m) { return m.id === state.selected; });
+          if (!still) state.selected = null;
+        }
+        populateAuthors();
+        render();
+        say("catalogue: " + fresh.length + " models · fetching providers…");
+        return getJSON("/api/v1/providers");
+      })
+      .then(function (res) {
+        DATA.counts.providers = (res.data || []).length;
+        if (!wantEps) {
+          stamp("live");
+          render();
+          finishScrape(MODELS.length + " models and " + DATA.counts.providers +
+            " providers refreshed in " + ((Date.now() - started) / 1000).toFixed(1) +
+            "s. Per-provider pricing was skipped.", "good");
+          offerDownload();
+          return null;
+        }
+        say("providers: " + DATA.counts.providers + " · fetching endpoints 0/" + MODELS.length);
+        var nextEps = {};
+        var ids = MODELS.map(function (m) { return m.id; });
+        return pool(ids, 5, function (id) {
+          return getJSON("/api/v1/models/" + id + "/endpoints", 2).then(function (r) {
+            var eps = flattenEndpoints(r.data || {});
+            if (eps.length) nextEps[id] = eps;
+          });
+        }, function (done, total, failed) {
+          progress(done, total);
+          if (done % 10 === 0 || done === total) {
+            say("endpoints " + done + "/" + total + (failed ? " · " + failed + " failed" : ""));
+            ENDPOINTS = nextEps;
+            DATA.endpoints = nextEps;
+            decorate();
+            renderProvider();
+          }
+        }).then(function (failed) {
+          ENDPOINTS = nextEps;
+          DATA.endpoints = nextEps;
+          var count = 0;
+          Object.keys(nextEps).forEach(function (k) { count += nextEps[k].length; });
+          DATA.counts.endpoints = count;
+          decorate();
+          stamp("live");
+          render();
+          offerDownload();
+          finishScrape(MODELS.length + " models · " + count + " endpoints · " +
+            DATA.counts.providers + " providers, refreshed in " +
+            ((Date.now() - started) / 1000).toFixed(1) + "s" +
+            (failed ? " (" + failed + " models' endpoints failed)" : "") +
+            ". The leaderboard below is unchanged — it has no CORS-reachable API.",
+            failed ? null : "good");
+        });
+      })
+      .catch(function (e) {
+        if (e && e.name === "AbortError") {
+          decorate();
+          render();
+          finishScrape("Stopped. Showing whatever arrived before you stopped it.", null);
+          return;
+        }
+        var blocked = (e instanceof TypeError) || /Failed to fetch|NetworkError|load failed/i.test(String(e && e.message));
+        if (blocked && sandboxed()) {
+          finishScrape("Blocked: a published artifact runs under a CSP that forbids " +
+            "requests to openrouter.ai. Open this file locally, or run " +
+            "python3 scrape_openrouter.py --endpoints.", "bad");
+        } else if (blocked) {
+          finishScrape("Network request failed — offline, or the request was blocked. " +
+            String(e && e.message || e), "bad");
+        } else {
+          finishScrape("Scrape failed: " + String(e && e.message || e), "bad");
+        }
+      });
+  }
+
+  // A plain <a download> is inert for artifact viewers — the shell mediates saves
+  // through the downloads capability. Resolve it early so the click knows which
+  // path to take: the capability when published, the blob href in a local file.
+  var dlCap = null;
+  if (window.claude && window.claude.use) {
+    window.claude.use("downloads").then(function (d) { dlCap = d; }, function () { dlCap = null; });
+  }
+
+  function offerDownload() {
+    // rebuilt payload, same shape scrape_openrouter.py writes, so it can replace data/payload.json
+    try {
+      var blob = new Blob([JSON.stringify({
+        scraped_at: DATA.scraped_at,
+        models: DATA.models,
+        endpoints: DATA.endpoints,
+        rankings: DATA.rankings,
+        counts: DATA.counts
+      })], { type: "application/json" });
+      ui.dl.blobRef = blob;
+      if (ui.dl.dataset.url) URL.revokeObjectURL(ui.dl.dataset.url);
+      var url = URL.createObjectURL(blob);
+      ui.dl.href = url;
+      ui.dl.dataset.url = url;
+      // neither path available: no dead affordance
+      ui.dl.hidden = !dlCap && sandboxed();
+    } catch (err) {
+      ui.dl.hidden = true;
+    }
+  }
+
+  ui.dl.addEventListener("click", function (ev) {
+    if (!dlCap) return;                 // local file: the href already works
+    ev.preventDefault();
+    if (!ui.dl.blobRef) return;
+    dlCap.save({ filename: "payload.json", data: ui.dl.blobRef }).then(function () {
+      say("payload.json saved — drop it into openrouter-scraper/data/ to keep it.", "good");
+    }, function (e) {
+      var code = e && e.code;
+      if (code === "declined") say("Download declined.", null);
+      else if (code === "rate_limited") say("A save prompt is already open — try again in a moment.", null);
+      else say("Save unavailable here: " + ((e && e.message) || code || e), "bad");
+    });
+  });
+
+  function stamp(mode) {
+    var when = mode === "live" ? new Date() : new Date(DATA.scraped_at);
+    if (mode === "live") DATA.scraped_at = when.toISOString();
+    document.getElementById("stamp").textContent =
+      fmtInt(DATA.counts.models) + " models · " + fmtInt(DATA.counts.endpoints) +
+      " endpoints · " + DATA.counts.providers + " providers · " +
+      (mode === "live" ? "refreshed live " : "scraped ") +
+      when.toISOString().slice(0, 16).replace("T", " ") + " UTC";
+  }
+
+  ui.btn.addEventListener("click", runScrape);
+  ui.stop.addEventListener("click", function () {
+    if (scrape.abort) scrape.abort.abort();
+  });
+  say(sandboxed()
+    ? "Published pages cannot reach openrouter.ai — the sandbox CSP blocks it. Works in a local copy of this file."
+    : "Calls openrouter.ai directly. The leaderboard cannot refresh this way.");
+
+  // ---------- boot ----------
+  stamp("file");
+
+  // open on the model with the widest provider choice, so the page shows its work
+  var best = null;
+  MODELS.forEach(function (m) { if (!best || m.nprov > best.nprov) best = m; });
+  if (best && best.nprov > 1) state.selected = best.id;
+
+  initControls();
+  renderFootnotes();
+  render();
+
+  var raf = null;
+  window.addEventListener("resize", function () {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function () {
+      var rows = filtered();
+      renderScatter(rows);
+      renderProvider();
+      renderRankings();
+    });
+  });
+})();
+</script>
